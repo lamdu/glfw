@@ -133,6 +133,8 @@ extern "C" {
  */
 #include <stdint.h>
 
+#include <stdbool.h>
+
 /* Include the chosen OpenGL or OpenGL ES headers.
  */
 #if defined(GLFW_INCLUDE_ES1)
@@ -1404,7 +1406,7 @@ typedef void (* GLFWscrollfun)(GLFWwindow*,double,double);
  *
  *  @ingroup input
  */
-typedef void (* GLFWkeyfun)(GLFWwindow*,int,int,int,int);
+typedef bool (* GLFWkeyfun)(GLFWwindow*,int,int,int,int);
 
 /*! @brief The function signature for Unicode character callbacks.
  *

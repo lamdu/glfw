@@ -210,9 +210,9 @@ static void animate(void)
 
 
 /* change view angle, exit upon ESC */
-void key( GLFWwindow* window, int k, int s, int action, int mods )
+bool key( GLFWwindow* window, int k, int s, int action, int mods )
 {
-  if( action != GLFW_PRESS ) return;
+  if( action != GLFW_PRESS ) return false;
 
   switch (k) {
   case GLFW_KEY_Z:
@@ -237,8 +237,9 @@ void key( GLFWwindow* window, int k, int s, int action, int mods )
     view_roty -= 5.0;
     break;
   default:
-    return;
+    return false;
   }
+  return true;
 }
 
 

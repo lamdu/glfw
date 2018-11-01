@@ -84,10 +84,14 @@ static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static bool key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE)
+    {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+        return true;
+    }
+    return false;
 }
 
 static void list_modes(GLFWmonitor* monitor)

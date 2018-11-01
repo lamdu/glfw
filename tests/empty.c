@@ -59,10 +59,14 @@ static int thread_main(void* data)
     return 0;
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static bool key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+        return true;
+    }
+    return false;
 }
 
 static float nrand(void)

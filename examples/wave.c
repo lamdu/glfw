@@ -271,10 +271,10 @@ static void error_callback(int error, const char* description)
 // Handle key strokes
 //========================================================================
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+bool key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return false;
 
     switch (key)
     {
@@ -305,8 +305,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             zoom += 0.25f;
             break;
         default:
-            break;
+            return false;
     }
+    return true;
 }
 
 

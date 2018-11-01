@@ -128,16 +128,18 @@ void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+bool key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return false;
 
     switch (key)
     {
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, 1);
-            break;
+            return true;
+        default:
+            return false;
     }
 }
 

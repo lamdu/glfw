@@ -121,10 +121,10 @@ static void cursor_position_callback(GLFWwindow* window, double x, double y)
     cursor_y = y;
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static bool key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return false;
 
     switch (key)
     {
@@ -134,7 +134,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             if (!animate_cursor)
                 glfwSetCursor(window, NULL);
 
-            break;
+            return true;
         }
 
         case GLFW_KEY_ESCAPE:
@@ -142,7 +142,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             if (glfwGetInputMode(window, GLFW_CURSOR) != GLFW_CURSOR_DISABLED)
             {
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
-                break;
+                return true;
             }
 
             /* FALLTHROUGH */
@@ -151,60 +151,63 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         case GLFW_KEY_N:
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             printf("(( cursor is normal ))\n");
-            break;
+            return true;
 
         case GLFW_KEY_D:
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             printf("(( cursor is disabled ))\n");
-            break;
+            return true;
 
         case GLFW_KEY_H:
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
             printf("(( cursor is hidden ))\n");
-            break;
+            return true;
 
         case GLFW_KEY_SPACE:
             swap_interval = 1 - swap_interval;
             printf("(( swap interval: %i ))\n", swap_interval);
             glfwSwapInterval(swap_interval);
-            break;
+            return true;
 
         case GLFW_KEY_W:
             wait_events = !wait_events;
             printf("(( %sing for events ))\n", wait_events ? "wait" : "poll");
-            break;
+            return true;
 
         case GLFW_KEY_T:
             track_cursor = !track_cursor;
-            break;
+            return true;
 
         case GLFW_KEY_0:
             glfwSetCursor(window, NULL);
-            break;
+            return true;
 
         case GLFW_KEY_1:
             glfwSetCursor(window, standard_cursors[0]);
-            break;
+            return true;
 
         case GLFW_KEY_2:
             glfwSetCursor(window, standard_cursors[1]);
-            break;
+            return true;
 
         case GLFW_KEY_3:
             glfwSetCursor(window, standard_cursors[2]);
-            break;
+            return true;
 
         case GLFW_KEY_4:
             glfwSetCursor(window, standard_cursors[3]);
-            break;
+            return true;
 
         case GLFW_KEY_5:
             glfwSetCursor(window, standard_cursors[4]);
-            break;
+            return true;
 
         case GLFW_KEY_6:
             glfwSetCursor(window, standard_cursors[5]);
-            break;
+            return true;
+
+        default:
+            return false;
     }
 }
 

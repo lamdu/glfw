@@ -68,10 +68,10 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static bool key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return false;
 
     switch (key)
     {
@@ -80,12 +80,15 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             int xpos, ypos;
             glfwGetWindowPos(window, &xpos, &ypos);
             glfwSetWindowPos(window, xpos, ypos);
-            break;
+            return true;
         }
 
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-            break;
+            return true;
+
+        default:
+            return false;
     }
 }
 

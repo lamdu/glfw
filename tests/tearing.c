@@ -92,10 +92,10 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static bool key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return false;
 
     switch (key)
     {
@@ -103,7 +103,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         {
             if (swap_interval + 1 > swap_interval)
                 set_swap_interval(window, swap_interval + 1);
-            break;
+            return true;
         }
 
         case GLFW_KEY_DOWN:
@@ -118,12 +118,12 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
                 if (swap_interval - 1 >= 0)
                     set_swap_interval(window, swap_interval - 1);
             }
-            break;
+            return true;
         }
 
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, 1);
-            break;
+            return true;
 
         case GLFW_KEY_F11:
         case GLFW_KEY_ENTER:
@@ -131,7 +131,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             static int x, y, width, height;
 
             if (mods != GLFW_MOD_ALT)
-                return;
+                return false;
 
             if (glfwGetWindowMonitor(window))
                 glfwSetWindowMonitor(window, NULL, x, y, width, height, 0);
@@ -146,8 +146,11 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
                                      mode->refreshRate);
             }
 
-            break;
+            return true;
         }
+
+        default:
+            return false;
     }
 }
 
