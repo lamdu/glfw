@@ -873,7 +873,7 @@ static void resize_callback(GLFWwindow* window, int width, int height)
 // Key callback functions
 //========================================================================
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action == GLFW_PRESS)
     {
@@ -881,16 +881,17 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         {
             case GLFW_KEY_ESCAPE:
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
-                break;
+                return GLFW_TRUE;
             case GLFW_KEY_W:
                 wireframe = !wireframe;
                 glPolygonMode(GL_FRONT_AND_BACK,
                               wireframe ? GL_LINE : GL_FILL);
-                break;
+                return GLFW_TRUE;
             default:
-                break;
+                return GLFW_FALSE;
         }
     }
+    return GLFW_FALSE;
 }
 
 

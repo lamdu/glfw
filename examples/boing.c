@@ -52,7 +52,7 @@
 void init( void );
 void display( void );
 void reshape( GLFWwindow* window, int w, int h );
-void key_callback( GLFWwindow* window, int key, int scancode, int action, int mods );
+int key_callback( GLFWwindow* window, int key, int scancode, int action, int mods );
 void mouse_button_callback( GLFWwindow* window, int button, int action, int mods );
 void cursor_position_callback( GLFWwindow* window, double x, double y );
 void DrawBoingBall( void );
@@ -237,13 +237,16 @@ void reshape( GLFWwindow* window, int w, int h )
    glLoadMatrixf((const GLfloat*) view);
 }
 
-void key_callback( GLFWwindow* window, int key, int scancode, int action, int mods )
+int key_callback( GLFWwindow* window, int key, int scancode, int action, int mods )
 {
     if (action != GLFW_PRESS)
-        return;
+        return GLFW_FALSE;
 
     if (key == GLFW_KEY_ESCAPE && mods == 0)
+    {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+        return GLFW_TRUE;
+    }
     if ((key == GLFW_KEY_ENTER && mods == GLFW_MOD_ALT) ||
         (key == GLFW_KEY_F11 && mods == GLFW_MOD_ALT))
     {
@@ -264,7 +267,9 @@ void key_callback( GLFWwindow* window, int key, int scancode, int action, int mo
                 glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
             }
         }
+        return GLFW_TRUE;
     }
+    return GLFW_FALSE;
 }
 
 static void set_ball_pos ( GLfloat x, GLfloat y )

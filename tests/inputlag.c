@@ -130,17 +130,18 @@ void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return GLFW_FALSE;
 
     switch (key)
     {
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, 1);
-            break;
+            return GLFW_TRUE;
     }
+    return GLFW_FALSE;
 }
 
 void draw_marker(struct nk_command_buffer* canvas, int lead, struct nk_vec2 pos)

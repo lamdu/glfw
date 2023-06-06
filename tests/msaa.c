@@ -75,20 +75,21 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return GLFW_FALSE;
 
     switch (key)
     {
         case GLFW_KEY_SPACE:
             glfwSetTime(0.0);
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-            break;
+            return GLFW_TRUE;
     }
+    return GLFW_FALSE;
 }
 
 static void usage(void)

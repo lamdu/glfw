@@ -382,15 +382,16 @@ static void update_mesh(void)
  * GLFW callback functions
  *********************************************************************/
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     switch(key)
     {
         case GLFW_KEY_ESCAPE:
             /* Exit program on Escape */
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-            break;
+            return GLFW_TRUE;
     }
+    return GLFW_FALSE;
 }
 
 static void error_callback(int error, const char* description)

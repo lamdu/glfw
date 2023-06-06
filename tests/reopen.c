@@ -78,18 +78,19 @@ static void window_close_callback(GLFWwindow* window)
     printf("Close callback triggered\n");
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return GLFW_FALSE;
 
     switch (key)
     {
         case GLFW_KEY_Q:
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-            break;
+            return GLFW_TRUE;
     }
+    return GLFW_FALSE;
 }
 
 static void close_window(GLFWwindow* window)

@@ -271,7 +271,7 @@ static GLFWbool parseMapping(_GLFWmapping* mapping, const char* string)
 
 // Notifies shared code of a physical key event
 //
-void _glfwInputKey(_GLFWwindow* window, int key, int scancode, int action, int mods)
+GLFWbool _glfwInputKey(_GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     assert(window != NULL);
     assert(key >= 0 || key == GLFW_KEY_UNKNOWN);
@@ -284,7 +284,7 @@ void _glfwInputKey(_GLFWwindow* window, int key, int scancode, int action, int m
         GLFWbool repeated = GLFW_FALSE;
 
         if (action == GLFW_RELEASE && window->keys[key] == GLFW_RELEASE)
-            return;
+            return GLFW_FALSE;
 
         if (action == GLFW_PRESS && window->keys[key] == GLFW_PRESS)
             repeated = GLFW_TRUE;
@@ -302,7 +302,9 @@ void _glfwInputKey(_GLFWwindow* window, int key, int scancode, int action, int m
         mods &= ~(GLFW_MOD_CAPS_LOCK | GLFW_MOD_NUM_LOCK);
 
     if (window->callbacks.key)
-        window->callbacks.key((GLFWwindow*) window, key, scancode, action, mods);
+        return window->callbacks.key((GLFWwindow*) window, key, scancode, action, mods);
+
+    return GLFW_FALSE;
 }
 
 // Notifies shared code of a Unicode codepoint input event

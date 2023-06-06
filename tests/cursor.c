@@ -154,10 +154,10 @@ static void cursor_position_callback(GLFWwindow* window, double x, double y)
     cursor_y = y;
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return GLFW_FALSE;
 
     switch (key)
     {
@@ -167,7 +167,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             if (!animate_cursor)
                 glfwSetCursor(window, NULL);
 
-            break;
+            return GLFW_TRUE;
         }
 
         case GLFW_KEY_ESCAPE:
@@ -176,7 +176,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             if (mode != GLFW_CURSOR_DISABLED && mode != GLFW_CURSOR_CAPTURED)
             {
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
-                break;
+                return GLFW_TRUE;
             }
 
             /* FALLTHROUGH */
@@ -186,22 +186,22 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             glfwGetCursorPos(window, &cursor_x, &cursor_y);
             printf("(( cursor is normal ))\n");
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_D:
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             printf("(( cursor is disabled ))\n");
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_H:
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
             printf("(( cursor is hidden ))\n");
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_C:
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_CAPTURED);
             printf("(( cursor is captured ))\n");
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_R:
             if (!glfwRawMouseMotionSupported())
@@ -217,18 +217,18 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
                 glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
                 printf("(( raw input is enabled ))\n");
             }
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_SPACE:
             swap_interval = 1 - swap_interval;
             printf("(( swap interval: %i ))\n", swap_interval);
             glfwSwapInterval(swap_interval);
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_W:
             wait_events = !wait_events;
             printf("(( %sing for events ))\n", wait_events ? "wait" : "poll");
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_T:
             track_cursor = !track_cursor;
@@ -237,7 +237,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             else
                 glfwSetCursor(window, NULL);
 
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_P:
         {
@@ -256,13 +256,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
                    x, y, x - cursor_x, y - cursor_y);
             cursor_x = x;
             cursor_y = y;
-            break;
+            return GLFW_TRUE;
         }
 
         case GLFW_KEY_UP:
             glfwSetCursorPos(window, 0, 0);
             glfwGetCursorPos(window, &cursor_x, &cursor_y);
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_DOWN:
         {
@@ -270,12 +270,12 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             glfwGetWindowSize(window, &width, &height);
             glfwSetCursorPos(window, width - 1, height - 1);
             glfwGetCursorPos(window, &cursor_x, &cursor_y);
-            break;
+            return GLFW_TRUE;
         }
 
         case GLFW_KEY_0:
             glfwSetCursor(window, NULL);
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_1:
         case GLFW_KEY_2:
@@ -294,7 +294,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             if (index < sizeof(standard_cursors) / sizeof(standard_cursors[0]))
                 glfwSetCursor(window, standard_cursors[index]);
 
-            break;
+            return GLFW_TRUE;
         }
 
         case GLFW_KEY_F11:
@@ -303,7 +303,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             static int x, y, width, height;
 
             if (mods != GLFW_MOD_ALT)
-                return;
+                break;
 
             if (glfwGetWindowMonitor(window))
                 glfwSetWindowMonitor(window, NULL, x, y, width, height, 0);
@@ -319,9 +319,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             }
 
             glfwGetCursorPos(window, &cursor_x, &cursor_y);
-            break;
+            return GLFW_TRUE;
         }
     }
+    return GLFW_FALSE;
 }
 
 int main(void)

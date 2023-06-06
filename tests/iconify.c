@@ -54,46 +54,46 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     printf("%0.2f Key %s\n",
            glfwGetTime(),
            action == GLFW_PRESS ? "pressed" : "released");
 
     if (action != GLFW_PRESS)
-        return;
+        return GLFW_FALSE;
 
     switch (key)
     {
         case GLFW_KEY_I:
             glfwIconifyWindow(window);
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_M:
             glfwMaximizeWindow(window);
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_R:
             glfwRestoreWindow(window);
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_A:
             glfwSetWindowAttrib(window, GLFW_AUTO_ICONIFY, !glfwGetWindowAttrib(window, GLFW_AUTO_ICONIFY));
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_B:
             glfwSetWindowAttrib(window, GLFW_RESIZABLE, !glfwGetWindowAttrib(window, GLFW_RESIZABLE));
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_D:
             glfwSetWindowAttrib(window, GLFW_DECORATED, !glfwGetWindowAttrib(window, GLFW_DECORATED));
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_F:
             glfwSetWindowAttrib(window, GLFW_FLOATING, !glfwGetWindowAttrib(window, GLFW_FLOATING));
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_F11:
         case GLFW_KEY_ENTER:
         {
             if (mods != GLFW_MOD_ALT)
-                return;
+                return GLFW_FALSE;
 
             if (glfwGetWindowMonitor(window))
             {
@@ -116,9 +116,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
                 }
             }
 
-            break;
+            return GLFW_TRUE;
         }
     }
+    return GLFW_FALSE;
 }
 
 static void window_size_callback(GLFWwindow* window, int width, int height)

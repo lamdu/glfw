@@ -1476,9 +1476,13 @@ static void demo_error_callback(int error, const char* description) {
     fflush(stdout);
 }
 
-static void demo_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+static int demo_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+    {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+        return GLFW_TRUE;
+    }
+    return GLFW_FALSE;
 }
 
 static void demo_refresh_callback(GLFWwindow* window) {

@@ -91,24 +91,25 @@ static void set_icon(GLFWwindow* window, int icon_color)
     glfwSetWindowIcon(window, 1, &img);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return GLFW_FALSE;
 
     switch (key)
     {
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_SPACE:
             cur_icon_color = (cur_icon_color + 1) % 5;
             set_icon(window, cur_icon_color);
-            break;
+            return GLFW_TRUE;
         case GLFW_KEY_X:
             glfwSetWindowIcon(window, 0, NULL);
-            break;
+            return GLFW_TRUE;
     }
+    return GLFW_FALSE;
 }
 
 int main(int argc, char** argv)

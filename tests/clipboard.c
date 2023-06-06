@@ -53,16 +53,16 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
-        return;
+        return GLFW_FALSE;
 
     switch (key)
     {
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-            break;
+            return GLFW_TRUE;
 
         case GLFW_KEY_V:
             if (mods == MODIFIER)
@@ -74,6 +74,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
                     printf("Clipboard contains \"%s\"\n", string);
                 else
                     printf("Clipboard does not contain a string\n");
+                return GLFW_TRUE;
             }
             break;
 
@@ -83,9 +84,11 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
                 const char* string = "Hello GLFW World!";
                 glfwSetClipboardString(NULL, string);
                 printf("Setting clipboard to \"%s\"\n", string);
+                return GLFW_TRUE;
             }
             break;
     }
+    return GLFW_FALSE;
 }
 
 int main(int argc, char** argv)

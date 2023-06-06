@@ -561,9 +561,8 @@ static const NSRange kEmptyRange = { NSNotFound, 0 };
     const int key = translateKey([event keyCode]);
     const int mods = translateFlags([event modifierFlags]);
 
-    _glfwInputKey(window, key, [event keyCode], GLFW_PRESS, mods);
-
-    [self interpretKeyEvents:@[event]];
+    if (!_glfwInputKey(window, key, [event keyCode], GLFW_PRESS, mods))
+        [self interpretKeyEvents:@[event]];
 }
 
 - (void)flagsChanged:(NSEvent *)event

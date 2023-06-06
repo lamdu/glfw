@@ -1155,14 +1155,12 @@ static void handleEvents(double* timeout)
             if (read(_glfw.wl.keyRepeatTimerfd, &repeats, sizeof(repeats)) == 8)
             {
                 for (uint64_t i = 0; i < repeats; i++)
-                {
-                    _glfwInputKey(_glfw.wl.keyboardFocus,
-                                  translateKey(_glfw.wl.keyRepeatScancode),
-                                  _glfw.wl.keyRepeatScancode,
-                                  GLFW_PRESS,
-                                  _glfw.wl.xkb.modifiers);
-                    inputText(_glfw.wl.keyboardFocus, _glfw.wl.keyRepeatScancode);
-                }
+                    if (!_glfwInputKey(_glfw.wl.keyboardFocus,
+                                       translateKey(_glfw.wl.keyRepeatScancode),
+                                       _glfw.wl.keyRepeatScancode,
+                                       GLFW_PRESS,
+                                       _glfw.wl.xkb.modifiers))
+                        inputText(_glfw.wl.keyboardFocus, _glfw.wl.keyRepeatScancode);
 
                 event = GLFW_TRUE;
             }
@@ -1704,9 +1702,7 @@ static void keyboardHandleKey(void* userData,
 
     timerfd_settime(_glfw.wl.keyRepeatTimerfd, 0, &timer, NULL);
 
-    _glfwInputKey(window, key, scancode, action, _glfw.wl.xkb.modifiers);
-
-    if (action == GLFW_PRESS)
+    if (!_glfwInputKey(window, key, scancode, action, _glfw.wl.xkb.modifiers) && action == GLFW_PRESS)
         inputText(window, scancode);
 }
 

@@ -397,7 +397,7 @@ static void scroll_callback(GLFWwindow* window, double x, double y)
            counter++, slot->number, glfwGetTime(), x, y);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static int key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     const char* name = glfwGetKeyName(key, scancode);
@@ -421,7 +421,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     }
 
     if (action != GLFW_PRESS)
-        return;
+        return GLFW_FALSE;
 
     switch (key)
     {
@@ -430,7 +430,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             slot->closeable = !slot->closeable;
 
             printf("(( closing %s ))\n", slot->closeable ? "enabled" : "disabled");
-            break;
+            return GLFW_TRUE;
         }
 
         case GLFW_KEY_L:
@@ -439,9 +439,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             glfwSetInputMode(window, GLFW_LOCK_KEY_MODS, !state);
 
             printf("(( lock key mods %s ))\n", !state ? "enabled" : "disabled");
-            break;
+            return GLFW_TRUE;
         }
     }
+    return GLFW_FALSE;
 }
 
 static void char_callback(GLFWwindow* window, unsigned int codepoint)
